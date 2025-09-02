@@ -1,0 +1,101 @@
+{% extends 'site/base.html' %}
+
+{% load static %}
+
+{% block title %}Kategoriyalar{% endblock %}
+
+
+{% block content %}
+	<a href="#" class="bigrek"></a>
+	<div class="container wrapper">
+		<div class="longrek"></div>
+		<div class="clearfix"></div>
+		
+		<ol class="breadcrumb">
+			<li><a href="{% url 'home' %}">Home</a></li>
+			<li class="active">{{ ctg.name }}</li>
+		</ol>
+		<div class="row">
+			<div class="col-md-8 col-xs-12">
+				<div class="cat_title">{{ ctg.name }}</div>
+				<div class="big_fav pop_cat">
+				<div id="bigfav" class="carousel slide" data-ride="carousel">
+					<div class="carousel-inner" role="listbox">
+						<div class="item active">
+							<img src="{{ news.0.image1.url }}" alt="...">
+								<a href="{% url 'view' pk=news.0.id %}">
+									<div class="carousel-caption">
+										<div class="caption_pos">
+											<div class="type_news">{{ ctg.name }}</div>
+											<div class="title">{{ news.0.title }}</div>
+											<span class="date">{{ news.0.get_date }}<br>
+												<i class="fa fa-eye"></i> {{ news.0.view }}
+											</span>
+										</div>
+									</div>
+								</a>
+						</div>
+					</div>
+					<div class="control">
+
+					</div>
+				</div>
+			</div>
+				<div class="news_box">
+
+					{% for i in news %}
+					{% if forloop.counter > 1 %}
+						<div class="cat_news">
+							<div class="cat_img"><img src="{{ i.image1.url }}" alt=""></div>
+							<a href="{% url 'view' pk=i.id %}">{{ i.title }}</a>
+							<p>{{ i.short_desc }}</p>
+							<span class="date">{{ i.get_date }}</span>
+							<span class="news_type"><i class="fa fa-eye"></i> {{ i.view }}</span>
+						</div>
+					{% endif %}
+					{% endfor %}
+
+					<nav aria-label="Page navigation">
+						<ul class="pagination">
+							<li>
+								<a href="#" aria-label="Previous">
+									<span aria-hidden="true">&laquo;</span>
+								</a>
+							</li>
+							<li><a href="#">1</a></li>
+							<li><a href="#">2</a></li>
+							<li><a href="#">3</a></li>
+							<li><a href="#">4</a></li>
+							<li><a href="#">5</a></li>
+							<li>
+								<a href="#" aria-label="Next">
+									<span aria-hidden="true">&raquo;</span>
+								</a>
+							</li>
+						</ul>
+					</nav>											
+				</div>
+			</div>
+			<div class="col-md-4 col-xs-12">
+				{% include 'site/partials/svejiy.html' %}
+				
+				<div class="news_box rek">
+					<div class="rek_right">
+						
+					</div>
+				</div>
+				<div class="subscribe">
+					<div class="title">Подписывайся на <b>1news.uz</b></div>
+					<form action="">
+						<div class="input-group">
+							<input type="text" name="email" placeholder="Email">
+							<button class="submit">Подписываться</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+{% endblock %}

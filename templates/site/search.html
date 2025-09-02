@@ -1,0 +1,108 @@
+{% extends 'site/base.html' %}
+{% load static %}
+
+{% block extra_style %}
+
+{% endblock %}
+
+
+
+{% block content %}
+	<a href="#" class="bigrek"></a>
+	<div class="container wrapper">
+		<div class="longrek"></div>
+		<div class="clearfix"></div>
+		
+		<ol class="breadcrumb">
+			<li><a href="{% url 'home' %}">Home</a></li>
+			<li>Search</li>
+		</ol>
+		<div class="row">
+			<div class="col-md-8 col-xs-12">
+				<div class="cat_title">Qidiruv: <b style="color: orange;"> {{ key }} </b> Qidiruvi bo'yicha <b style="color:orange;">{{ cnt }}</b> ta ma'lumot topildi </div>
+				<div class="search_box">
+					<form method="get">
+						<div class="input-group">
+							<input type="text" name="search" placeholder="Qidiruv...">
+							<button class="btn submit"><i class="fa fa-search"></i></button>
+						</div>
+					</form>
+				</div>
+				<div class="news_box">
+
+
+					{% for i in result %}
+					<div class="cat_news">
+						<div class="cat_img"><img src="{{ i.image1.url }}" alt=""></div>
+						<a href="{% url 'view' pk=i.id %}">{{ i.title }}</a>
+						<p>{{ i.short_desc }}</p>
+						<span class="date">{{ i.get_date }}</span>
+						<span class="news_type"><i class="fa fa-pencil"></i> {{ i.ctg.name }}</span>
+						<span class="news_type"><i class="fa fa-eye"></i> {{ i.view }}</span>
+					</div>
+					{% endfor %}
+
+
+					<nav aria-label="Page navigation">
+						<ul class="pagination">
+
+							{% if result.has_previous %}
+							<li>
+								<a href="?page={{ result.previous_page_number }}&search={{ key }}" aria-label="Previous">
+									<span aria-hidden="true">&laquo;</span>
+								</a>
+							</li>
+							{% endif %}
+
+							{% for i in paginator.page_range %}
+							<li {% if i == page %} class="active" {% endif %}
+							><a href="?page={{ i }}&search={{ key }}">{{ i }}</a></li>
+							{% endfor %}
+
+
+
+							{% if result.has_next %}
+							<li>
+								<a href="?page={{ result.next_page_number }}&search={{ key }}" aria-label="Next">
+									<span aria-hidden="true">&raquo;</span>
+								</a>
+							</li>
+							{% endif %}
+
+						</ul>
+					</nav>											
+				</div>
+			</div>
+			<div class="col-md-4 col-xs-12">
+				{% include 'site/partials/svejiy.html' %}
+
+				
+				<div class="news_box rek">
+					<div class="rek_right">
+						
+					</div>
+				</div>
+				<div class="subscribe">
+					<div class="title">Подписывайся на <b>1news.uz</b></div>
+					<form action="">
+						<div class="input-group">
+							<input type="text" name="email" placeholder="Email">
+							<button class="submit">Подписываться</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+{% endblock %}
+
+
+{% block title %}Qidiruv{% endblock %}
+
+
+
+
+
+

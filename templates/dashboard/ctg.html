@@ -1,0 +1,254 @@
+{% extends 'dashboard/base.html' %}
+{% block title %} Category {% endblock %}
+
+
+
+{% block content %}
+
+
+     <div class="card">
+         <div class="card-header d-flex justify-content-between">
+            <div class="header-title">
+               <h4 class="card-title">Categoriyalar ro'yxati</h4>
+            </div>
+
+         </div>
+         <div class="card-body">
+            {% if added %}
+            <div class="alert alert-success" role="alert">
+               <div class="iq-alert-text">Saytga Yangi <b>Kategoriya</b> muaffaqiyatli qo'shildi!</div>
+            </div>
+            {% elif error %}
+            <div class="alert alert-danger" role="alert">
+               <div class="iq-alert-text">{{ error }}</div>
+            </div>
+            {% elif deleted %}
+            <div class="alert alert-warning" role="alert">
+               <div class="iq-alert-text">{{ deleted }}</div>
+            </div>
+            {% endif %}
+            <div class="table-editable">
+               <span class="float-right mb-3 mr-2">
+               <button class="btn btn-sm bg-primary" data-toggle="modal" data-target="#addCtgModal"><i
+                  class="ri-add-fill"><span class="pl-1">Yangi Qo'shish</span></i>
+               </button>
+               </span>
+               <table class="table table-bordered table-responsive-md table-striped text-center">
+                  <thead>
+                     <tr>
+                        <th>№</th>
+                        <th>Name</th>
+                        <th>Slug</th>
+                        <th>Menuda Chiqishi</th>
+                        <th>Actions</th>
+                     </tr>
+                  </thead>
+                  <tbody>
+
+                  {% for i in ctgs %}
+                     <tr>
+                        <td>{{ i.id }}</td>
+                        <td>{{ i.name }}</td>
+                        <td>{{ i.slug }}</td>
+                        <td>{{ i.get_is_menu }}</td>
+                        <td>
+                           <button class="btn bg-primary-light rounded-pill btn-sm" data-toggle="modal" data-target="#editCtgModal-{{ i.id }}">
+                              <i class="fas fa-pencil"></i>
+                           </button>
+                           <button class="btn bg-danger-light  rounded-pill btn-sm" data-toggle="modal" data-target="#deleteConfModal-{{ i.id }}">
+                              <i class="fas fa-trash"></i>
+                           </button>
+                        </td>
+                     </tr>
+                  {% endfor %}
+
+
+                  </tbody>
+               </table>
+               <hr>
+               <nav aria-label="Page navigation example">
+                  <ul class="pagination justify-content-end">
+                     {% if ctgs.has_previous %}
+                        <li class="page-item"><a class="page-link border-primary"
+                                                 href="?page={{ ctgs.previous_page_number }}"><<</a></li>
+                     {% endif %}
+
+                     {% for i in paginator.page_range %}
+                     <li class="page-item"><a class="page-link border-primary" href="?page={{ i }}">{{ i }}</a></li>
+                     {% endfor %}
+
+                     {% if ctgs.has_next %}
+                        <li class="page-item"><a class="page-link border-primary" href="?page={{ ctgs.next_page_number }}">>></a></li>
+                     {% endif %}
+
+                  </ul>
+               </nav>
+            </div>
+         </div>
+     </div>
+
+
+
+
+
+
+
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="addCtgModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+   <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalTitle">Yangi Kategoriya Qo'shish</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <div class="modal-body">
+            <form action="{% url 'ctg_add' %}" method="post">
+               {% csrf_token %}
+
+               <div class="row">
+                  <div class="col-md-6 mb-3">
+                     <label for="validationDefault01">Nomi</label>
+                     <input type="text" name="name" class="form-control" id="validation01" placeholder="Fan texnika" required>
+                  </div>
+
+                   <div class="col-md-6 mb-3">
+                     <label for="validationDefault01">Slug</label>
+                     <input type="text" name="slug" class="form-control" id="validationDefault01" placeholder="texnolojia">
+                  </div>
+                  <div style="margin-left: 35%;" class="col-md-6 custom-control custom-switch custom-switch-text custom-control-inline">
+                     <div class="custom-switch-inner">
+                        <p class="mb-0"> Menuda Chiqsinmi? </p>
+                        <input name="is_menu" type="checkbox" class="custom-control-input" id="customSwitch" checked="">
+                        <label class="custom-control-label" for="customSwitch" data-on-label="Ha" data-off-label="Yo'q">
+                        </label>
+                     </div>
+                  </div>
+               </div>
+               <br>
+
+
+             <div class="modal-footer">
+               <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+               <button type="submit" class="btn btn-primary">Save changes</button>
+             </div>
+          </form>
+         </div>
+
+      </div>
+   </div>
+</div>
+
+<!--   *****************************   edit  **********************************  -->
+
+{% for i in ctgs %}
+<!-- Modal -->
+<div class="modal fade" id="editCtgModal-{{ i.id }}" tabindex="-1" role="dialog" aria-labelledby="editCategoryModal" aria-hidden="true">
+   <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalCenterTitle"><mark><b>{{ i.name }}</b></mark>ni o'zgartirish</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <div class="modal-body">
+            <form action="{% url 'ctg_edit' pk=i.id %}" method="post">
+               {% csrf_token %}
+
+               <div class="row">
+                  <div class="col-md-6 mb-3">
+                     <label for="validationDefault01">Nomi</label>
+                     <input type="text" name="name" value="{{ i.name }}" class="form-control" id="validationDefault01" placeholder="Fan texnika" required>
+                  </div>
+
+                   <div class="col-md-6 mb-3">
+                     <label for="validationDefault01">Slug</label>
+                     <input type="text" name="slug" value="{{ i.slug }}"  class="form-control" id="validationDefault01" placeholder="texnolojia">
+                  </div>
+                  <div style="margin-left: 35%;" class="col-md-6 custom-control custom-switch custom-switch-text custom-control-inline">
+                     <div class="custom-switch-inner">
+                        <p class="mb-0"> Menuda Chiqsinmi? </p>
+                        <input name="is_menu" type="checkbox"  class="custom-control-input" id="customSwitch-{{ i.id }}" {% if i.is_menu %} checked="" {% endif %}>
+                        <label class="custom-control-label" for="customSwitch-{{ i.id }}" data-on-label="Ha" data-off-label="Yo'q">
+                        </label>
+                     </div>
+                  </div>
+               </div>
+               <br>
+
+
+             <div class="modal-footer">
+               <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+               <button type="submit" class="btn btn-primary">Save changes</button>
+             </div>
+          </form>
+         </div>
+
+      </div>
+   </div>
+</div>
+{% endfor %}
+
+
+
+
+
+
+{% for i in ctgs %}
+<div class="modal fade" id="deleteConfModal-{{ i.id }}" tabindex="-1" role="dialog" aria-labelledby="LogoutModalLabel" aria-hidden="true">
+   <div class="modal-dialog" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel"><mark>{{ i.name }}</mark> ni o'chirish </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <div class="modal-body">
+            Siz rostdan ham {{ i.name }} ni o'chirmoqchimisz?
+         </div>
+         <div class="modal-footer">
+            <a href="{% url 'ctg_del' pk=i.id %}" type="button" class="btn btn-secondary">Ha</a>
+            <button type="button" class="btn btn-primary"  data-dismiss="modal">Yo'q</button>
+         </div>
+      </div>
+   </div>
+</div>
+{% endfor %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% endblock %}
+
+
+{% block extra_js %}
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+

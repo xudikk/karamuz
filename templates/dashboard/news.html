@@ -1,0 +1,422 @@
+{% extends 'dashboard/base.html' %}
+{% block title %} News | Crud {% endblock %}
+
+{% load widget_tweaks %}
+
+
+{% block content %}
+
+{% if status == 'form' %}
+
+
+<div class="card">
+ <div class="card-header d-flex justify-content-between">
+        <div class="header-title">
+           <h4 class="card-title">Yangiliklar Formasi</h4>
+        </div>
+  </div>
+   <div class="card-body">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+
+               <div class="form-row">
+                  <div class="col-md-6 mb-3">
+                     <label for="">Title(Sarlavha):</label>
+                     {{ form.title|add_class:'form-control' }}
+                  </div>
+                  <div class="col-md-6 mb-3">
+                     <label for="">Kategoriya:</label>
+                     {{ form.ctg|add_class:'form-control' }}
+                  </div>
+                  <div class="col-md-6 mb-3">
+                     <label for="">Qisqacha Mazmuni</label>
+                      {{ form.short_desc|add_class:"form-control" }}
+                  </div>
+
+                   <div class="col-md-6 mb-3">
+                     <label for="">To'lliq Mazmuni</label>
+                      {{ form.description|add_class:"form-control" }}
+                   </div>
+
+                   <div class="col-md-6 mb-3">
+                      {{ form.image1|add_class:"custom-file-input" }}
+                       <label for="" class="custom-file-label">{% if obj.image1 %} {{ obj.image1.url }} {% else %} Birinchi Rasm {% endif %}</label><br>
+                   </div>
+                   <div class="col-md-6 mb-3">
+                      {{ form.image2|add_class:"custom-file-input" }}
+                       <label for="" class="custom-file-label"> {% if obj.image2 %} {{ obj.image2.url }} {% else %} Ikkinchi Rasm {% endif %} </label>
+                   </div>
+
+
+                   <div class="col-md-6 mb-3">
+                     <label for="">Mavzuga oid taglar</label>
+                      {{ form.tags|add_class:"form-control" }}
+                   </div>
+
+                   <div class="col-md-6 mb-3">
+                     <label for="">Ko'rishlar soni</label>
+                       <input type="text" class="form-control disabled" disabled value="{% if obj %}{{ obj.view }}{% else %}0{% endif %}">
+                   </div>
+
+                   <div class="col-md-6 mb-3">
+                     <label for="">Saytga Qo'shilgan Vaqt</label>
+                       <input type="text" class="form-control disabled" disabled value="{% if obj %}{{ obj.get_date }}{% else %}Hozir{% endif %}">
+                   </div>
+
+                   <div class="col-md-6 mb-3">
+                     <label for="">Oxirgi marta o'zgartirilgan Vaqti</label>
+                       <input type="text" class="form-control disabled" disabled value="{% if obj %}{{ obj.get_date_up }}{% else %}Hozir{% endif %}">
+                   </div>
+                   {% if obj  %}
+                    <div class="col-md-12">
+                         <ul class="list-unstyled p-0 m-0 row">
+
+                           <li class="col-lg-6 col-md-6 col-sm-6 mt-2">
+                               <img src="{{ obj.image1.url }}" class="img-thumbnail w-100 img-fluid rounded"
+                                    alt="Responsive image">
+                           </li>
+                            {% if obj.image2 %}
+                           <li class="col-lg-6 col-md-6 col-sm-6 mt-2">
+                               <img src="{{ obj.image2.url }}" class="rounded w-100 img-fluid rounded"
+                                    alt="Responsive image">
+                           </li>
+                             {% endif %}
+
+                        </ul>
+
+                    </div>
+
+                   {% endif %}
+               </div>
+                   <hr>
+               <div class="form-group">
+                  <button class="btn btn-primary" type="submit">Submit form</button>
+               </div>
+
+            </form>
+
+
+   </div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% elif status == 'profile' %}
+<div class="card">
+   <div class="card-header d-flex justify-content-between">
+        <div class="header-title">
+           <h4 class="card-title">Yangilik Profili</h4>
+        </div>
+  </div>
+   <div class="card-body">
+      <div class="table-editable">
+         <div class="row">
+            <div class="col-md-4">
+               <div class="card">
+                  <div class="card-body">
+                     <div class="d-flex align-items-center">
+                        <div class="">
+                            <p class="mb-2 text-secondary">Yangilik IDsi</p>
+                            <div class="d-flex flex-wrap justify-content-start align-items-center">
+                               <h5 class="mb-0 font-weight-bold"><i class="fas fa-money-check"></i> {{ new.id }}</h5>
+                            </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="col-md-4">
+               <div class="card">
+                  <div class="card-body">
+                     <div class="d-flex align-items-center">
+                        <div class="">
+                            <p class="mb-2 text-secondary">Ko'rishlar soni</p>
+                            <div class="d-flex flex-wrap justify-content-start align-items-center">
+                               <h5 class="mb-0 font-weight-bold"><i class="fas fa-eye"></i> {{ new.view }}</h5>
+                            </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="col-md-4">
+               <div class="card">
+                  <div class="card-body">
+                     <div class="d-flex align-items-center">
+                        <div class="">
+                            <p class="mb-2 text-secondary">Categoriyasi</p>
+                            <div class="d-flex flex-wrap justify-content-start align-items-center">
+                               <h5 class="mb-0 font-weight-bold"><i class="	fas fa-newspaper"></i> {{ new.ctg.name }}</h5>
+                            </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+
+         </div>
+
+
+           <table class="table table-bordered table-responsive-md table-striped text-center">
+              <thead>
+                 <tr>
+                    <th style="max-width: 200px;">Key</th>
+                    <th>Value</th>
+                 </tr>
+              </thead>
+              <tbody>
+                 <tr>
+                    <td style="text-align: start;">Sarlavha</td>
+                    <td style="max-width: 200px;">{{ new.title }}</td>
+                 </tr>
+                 <tr>
+                    <td style="text-align: start;">Qisqacha mazmun</td>
+                    <td style="max-width: 200px;">{{ new.short_desc }}</td>
+                 </tr>
+                 <tr>
+                    <td style="text-align: start;">To'lliq Mavzu</td>
+                     <td>
+                       <button class="btn bg-secondary-light  rounded-pill btn-sm" data-toggle="modal" data-target="#fullDesc">
+                          <i class="fas fa-scroll"></i> To'lliq o'qish
+                       </button>
+                     </td>
+                 </tr>
+                <tr>
+                    <td style="text-align: start;">Mavzuga oid taglar</td>
+                    <td style="max-width: 200px;">{% for tag in new.get_tags %} #{{ tag }} {% endfor %}</td>
+                 </tr>
+                <tr>
+                    <td style="text-align: start;">Yangilik qo'shilgan Sana</td>
+                    <td style="max-width: 200px;">{{ new.get_date }}</td>
+                 </tr>
+                <tr>
+                    <td style="text-align: start;">Last Updated</td>
+                    <td style="max-width: 200px;">{{ new.get_date_up }}</td>
+                 </tr>
+                <tr>
+                    <td style="max-width: 200px;"><img src="{{ new.image1.url }}" width="450px" height="450px" style="object-fit: cover;" alt=""></td>
+                     {% if new.image2 %}
+                        <td style="max-width: 200px;"><img src="{{ new.image2.url }}" width="450px"  style="object-fit: cover;" height="450px" alt=""></td>
+
+                     {% endif %}
+
+
+                 </tr>
+                <tr>
+                 </tr>
+
+              </tbody>
+           </table>
+           <hr>
+
+          <a href="{% url 'dashboard-home' %}" class="btn btn-secondary mt-2"><i class="fas fa-home"></i> Bosh Sahifa</a>
+          <a href="{% url 'news-list' %}" class="btn btn-primary mt-2"><i class="fas fa-arrow-left"></i> Back to List</a>
+          <a href="{% url 'news-edit' pk=new.id %}" type="button" class="btn btn-success mt-2"><i class="fas fa-pen"></i> Edit</a>
+          <button type="button" class="btn btn-danger mt-2" data-toggle="modal" data-target="#deleteNew" ><i class="fas fa-trash"></i> Delete</button>
+
+        </div>
+
+
+
+
+
+   </div>
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="fullDesc" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+   <div class="modal-dialog modal-dialog-scrollable" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalScrollableTitle">{{ new.title }}</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <div class="modal-body">
+             {% for i in new.get_full_desc %}
+             <p>{{ i }}</p>
+             {% endfor %}
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+         </div>
+      </div>
+   </div>
+</div>
+
+
+
+<!-- ******************** delete modal  *******************************-->
+
+<!-- Modal -->
+<div class="modal fade" id="deleteNew" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+   <div class="modal-dialog modal-dialog-scrollable" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="deleteNew">Yangilikni O'chirish</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <div class="modal-body">
+             <h3>Rostdan Ham {{ new.title }}ni o'chirmoqchimisz?</h3>
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Yopish</button>
+            <a href="{% url 'news-delete' pk=new.id %}" class="btn btn-danger" >Ha</a>
+         </div>
+      </div>
+   </div>
+</div>
+
+
+
+
+
+
+
+
+
+{% else %}
+<!--           ********************************************         -->
+
+
+
+    <div class="card">
+     <div class="card-header d-flex justify-content-between">
+        <div class="header-title">
+           <h4 class="card-title">Yangiliklar ro'yxati</h4>
+        </div>
+
+     </div>
+     <div class="card-body">
+        {% if added %}
+            <div class="alert alert-success" role="alert">
+               <div class="iq-alert-text">Saytga Yangi <b>Yangilik</b> muvaffaqiyatli qo'shildi!</div>
+            </div>
+        {% elif error %}
+            <div class="alert alert-danger" role="alert">
+               <div class="iq-alert-text">{{ error }}</div>
+            </div>
+        {% elif deleted %}
+            <div class="alert alert-warning" role="alert">
+               <div class="iq-alert-text">{{ deleted }}</div>
+            </div>
+        {% endif %}
+        <div class="table-editable">
+           <span class="float-right mb-3 mr-2">
+           <a href="{% url 'news-add' %}" class="btn btn-sm bg-primary"><i
+              class="ri-add-fill"><span class="pl-1">Yangi Qo'shish</span></i>
+           </a>
+           </span>
+           <table class="table table-bordered table-responsive-md table-striped text-center">
+              <thead>
+                 <tr>
+                    <th>№</th>
+                    <th>Title</th>
+                    <th>Kategoriya</th>
+                    <th>Rasm(1chisi)</th>
+                    <th>Yaratilgan Vaqt</th>
+                    <th>Actions</th>
+                 </tr>
+              </thead>
+              <tbody>
+
+              {% for i in news %}
+                 <tr>
+                    <td>{{ i.id }}</td>
+                    <td style="max-width: 300px;">{{ i.title }}</td>
+                    <td>{{ i.ctg.name }}</td>
+                    <td><img src="{{ i.image1.url }}" alt="" width="200px"></td>
+                    <td>{{ i.get_date }}</td>
+                    <td>
+                       <a href="{% url 'news-info' pk=i.id %}" title="Yangilikni to'lliq o'qish" class="btn bg-info-light rounded-pill btn-sm">
+                          <i class="fas fa-book-open"></i>
+                       </a>
+                       <a href="{% url 'news-edit' pk=i.id %}" class="btn bg-primary-light rounded-pill btn-sm">
+                          <i class="fas fa-pencil"></i>
+                       </a>
+                       <button class="btn bg-danger-light  rounded-pill btn-sm" data-toggle="modal" data-target="#deleteConfModal-{{ i.id }}">
+                          <i class="fas fa-trash"></i>
+                       </button>
+                    </td>
+                 </tr>
+              {% endfor %}
+
+
+              </tbody>
+           </table>
+           <hr>
+           <nav aria-label="Page navigation example">
+              <ul class="pagination justify-content-end">
+                 {% if news.has_previous %}
+                    <li class="page-item"><a class="page-link border-primary"
+                                             href="?page={{ news.previous_page_number }}"><<</a></li>
+                 {% endif %}
+
+                 {% for i in paginator.page_range %}
+                 <li class="page-item"><a class="page-link border-primary" href="?page={{ i }}">{{ i }}</a></li>
+                 {% endfor %}
+
+                 {% if news.has_next %}
+                    <li class="page-item"><a class="page-link border-primary" href="?page={{ news.next_page_number }}">>></a></li>
+                 {% endif %}
+
+              </ul>
+           </nav>
+        </div>
+     </div>
+ </div>
+
+
+
+
+
+
+{% endif %}
+
+
+
+
+
+{% endblock %}
+
+

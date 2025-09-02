@@ -1,0 +1,167 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Karam.uz | Registration</title>
+
+  <style>
+    * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f4f4f9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .registration-box {
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      width: 400px;
+      max-width: 100%;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    .input-group {
+      margin-bottom: 20px;
+    }
+
+    .input-group label {
+      font-size: 14px;
+      color: #666;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      margin-top: 5px;
+      font-size: 14px;
+    }
+
+    .input-group input:focus {
+      border-color: #3498db;
+      outline: none;
+    }
+
+    .error-message {
+      color: red;
+      font-size: 12px;
+      margin-top: 5px;
+    }
+
+    .terms {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .terms input {
+      margin-right: 10px;
+    }
+
+    .terms label {
+      font-size: 14px;
+      color: #666;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 12px;
+      background-color: #3498db;
+      border: none;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    .submit-btn:hover {
+      background-color: #2980b9;
+    }
+
+    .login-link {
+      text-align: center;
+      margin-top: 15px;
+    }
+
+    .login-link a {
+      color: #3498db;
+      text-decoration: none;
+    }
+
+    .login-link a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 480px) {
+      .registration-box {
+        padding: 20px;
+      }
+    }
+
+  </style>
+
+</head>
+<body>
+
+  <div class="container">
+    <div class="registration-box">
+      <h2>Akkaunt Yaratish</h2>
+        <h3 style="color: red;">{{ error }}</h3>
+
+      <form id="registration-form" method="post">
+        {% csrf_token %}
+        <div class="input-group">
+          <label for="username">Username</label>
+          <input type="text" name="username" id="username" placeholder="username kiriting" required>
+          <small id="username-error" class="error-message"></small>
+        </div>
+
+        <div class="input-group">
+          <label for="phone">Phone</label>
+          <input type="tel" name="phone" id="phone" placeholder="Telefon Raqamingizni kiriting" required>
+          <small id="email-error" class="error-message"></small>
+        </div>
+
+        <div class="input-group">
+          <label for="password">Password</label>
+          <input type="password" name="pass" id="password" placeholder="Enter your password" required>
+          <small id="password-error" class="error-message"></small>
+        </div>
+
+        <div class="input-group">
+          <label for="confirm-password">Confirm Password</label>
+          <input type="password" name="pass_conf" id="confirm-password" placeholder="Confirm your password" required>
+          <small id="confirm-password-error" class="error-message"></small>
+        </div>
+
+        <button type="submit" class="submit-btn">Register</button>
+      </form>
+
+      <p class="login-link">Akkauntingiz bormi? <a href="{% url 'login' %}">Login</a></p>
+    </div>
+  </div>
+
+</body>
+</html>

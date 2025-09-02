@@ -1,0 +1,410 @@
+{% extends 'site/base.html' %}
+{% load static %}
+
+{% block title %}View{% endblock %}
+{% block extra_style %}
+<style>
+	/* General form styling */
+form {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-family: 'Arial', sans-serif;
+}
+
+/* Input field styling */
+input[type="text"] {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+}
+
+input[type="text"]:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+}
+
+/* Textarea styling */
+textarea {
+    width: 100%;
+    min-height: 120px;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+    resize: vertical;
+    transition: border-color 0.3s ease;
+}
+
+textarea:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+}
+
+/* Placeholder styling */
+input::placeholder,
+textarea::placeholder {
+    color: #999;
+    font-style: italic;
+}
+
+/* Button styling */
+.btn_comment {
+    background: #007bff;
+    color: #ffffff;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.btn_comment:hover {
+    background: #0056b3;
+}
+
+.btn_comment:active {
+    transform: translateY(1px);
+}
+
+/* Responsive design */
+@media (max-width: 480px) {
+    form {
+        padding: 15px;
+    }
+
+    input[type="text"],
+    textarea {
+        font-size: 14px;
+    }
+
+    .btn_comment {
+        width: 100%;
+        padding: 10px;
+        font-size: 14px;
+    }
+}
+
+
+/* General comments section styling */
+.comments {
+    max-width: 700px;
+    margin: 20px auto;
+    padding: 0;
+    list-style: none;
+    font-family: 'Arial', sans-serif;
+}
+
+.comments li {
+    margin-bottom: 20px;
+}
+
+.com_info {
+    padding: 5px;
+    background: #f9f9f9;
+    border-radius: 8px;
+    position: relative;
+}
+
+.author {
+    font-weight: bold;
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.com_info p {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+.date {
+    font-size: 12px;
+    color: #999;
+    margin-bottom: 10px;
+}
+
+.com_img img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+    vertical-align: top;
+}
+
+.sub {
+    list-style: none;
+    padding-left: 40px;
+    margin-top: 10px;
+}
+
+.sub li {
+    display: flex;
+    margin-bottom: 15px;
+}
+
+/* Reply button styling */
+.reply-btn {
+    background: #007bff;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.3s ease;
+}
+
+.reply-btn:hover {
+    background: #0056b3;
+}
+
+.reply-btn:active {
+    transform: translateY(1px);
+}
+
+/* Reply form styling */
+.reply-form {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.reply-name {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    width: 100%;
+    max-width: 300px;
+}
+
+.reply-text {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    width: 100%;
+    min-height: 80px;
+    resize: vertical;
+}
+
+.submit-reply {
+    background: #28a745;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    align-self: flex-start;
+    transition: background 0.3s ease;
+}
+
+.submit-reply:hover {
+    background: #218838;
+}
+
+.submit-reply:active {
+    transform: translateY(1px);
+}
+
+hr {
+    border: none;
+    border-top: 1px solid #eee;
+    margin: 15px 0;
+}
+
+/* Responsive design */
+@media (max-width: 480px) {
+    .comments {
+        padding: 10px;
+    }
+
+    .sub {
+        padding-left: 20px;
+    }
+
+    .reply-name,
+    .reply-text {
+        font-size: 12px;
+    }
+
+    .reply-btn,
+    .submit-reply {
+        font-size: 12px;
+        padding: 6px 12px;
+    }
+}
+
+</style>
+{% endblock %}
+
+
+{% block content %}
+	<a href="#" class="bigrek"></a>
+	<div class="container wrapper">
+		<div class="longrek"></div>
+		<div class="clearfix"></div>
+		
+		<ol class="breadcrumb">
+			<li><a href="{% url 'home' %}">Home</a></li>
+			<li><a href="{% url 'category' slug=new.ctg.slug %}">{{ new.ctg.name }}</a></li>
+			<li class="active">{{ new.title }}</li>
+		</ol>
+		<div class="row">
+			<div class="col-md-8 col-xs-12">
+				<div class="view_img"><img src="{{ new.image1.url }}" alt=""></div>
+				<div class="news_box view">
+					<div class="view_title">{{ new.title }}</div>
+					<span class="date">{{ new.get_date }}</span>
+					<span class="news_type"><i class="fa fa-pencil"></i> {{ new.ctg.name }}</span>
+					<span class="news_type"><i class="fa fa-eye"></i> {{ new.view }}</span>
+					<div class="view_desc">
+						<p><b style="color: black;">{{ new.short_desc }}</b></p>
+
+						{% if new.image2 %}
+						<div id="bigfav" class="carousel slide view_slide" data-ride="carousel">
+							<div class="carousel-inner" role="listbox">
+								<div class="item active">
+									<img src="{{ new.image2.url }}" alt="...">
+								</div>
+							</div>
+							<div class="control">
+
+							</div>
+						</div>
+						{% endif %}
+
+					<p>{{ new.description }}</p>
+				</div>
+				<ul class="tag">
+					{% for tag in new.get_tags %}
+					<li><a href="">#{{ tag }}</a></li>
+					{% endfor %}
+				</ul>
+				<div class="nav_news">
+					<a href="#" class="prev_news text-right">
+						<i class="fa fa-angle-left"></i>
+						Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+					</a>
+					<a href="#" class="next_news">
+						Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+						<i class="fa fa-angle-right"></i>
+					</a>
+					<div class="clearfix"></div>
+				</div>
+				<div class="comment">
+					<div class="title">Izohlar <sup style="">{{ comment_cnt }}</sup></div>
+					<ul class="comments">
+						{% for i in comments %}
+						<li>
+							<div class="com_info">
+								<div class="author">{{ i.user }}</div>
+								<p>{{ i.message }}</p>
+								<div class="date">{{ i.get_date }}</div>
+								<button class="reply-btn">Reply</button>
+								<form class="reply-form" style="display: none;" method="post">
+									{% csrf_token %}
+									<input type="text" name="user" placeholder="Your name" class="reply-name" required>
+									<input name="sub" type="number" value="{{ i.id }}" hidden>
+									<textarea name="message" placeholder="Your reply" class="reply-text" required></textarea>
+									<button type="submit" class="submit-reply">Submit Reply</button>
+								</form>
+								<hr>
+							</div>
+							{% if i.subs.all %}
+								{% for sub in i.subs.all %}
+									<ul class="sub">
+										<li>
+											<div class="com_info" style="width: 100%;">
+												<div class="author">{{ sub.user }}</div>
+												<p>{{ sub.message }}</p>
+												<div class="date">{{ sub.get_date }}</div>
+
+											</div>
+										</li>
+									</ul>
+								{% endfor %}
+							{% endif %}
+						</li>
+						{% endfor %}
+				</ul>
+					<form method="post">
+						{% csrf_token %}
+
+						<input type="text" placeholder="Ism" name="user">
+						<input type="number" value="" hidden>
+						<textarea placeholder="Izoh" name="message"></textarea>
+						<button class="btn btn_comment ">Izoh qoldirish</button>
+					</form>
+
+				</div>
+				</div>
+			</div>
+			<div class="col-md-4 col-xs-12">
+				{% include 'site/partials/svejiy.html' %}
+
+				
+				<div class="news_box rek">
+					<div class="rek_right">
+						
+					</div>
+				</div>
+				<div class="subscribe">
+					<div class="title">Подписывайся на <b>1news.uz</b></div>
+					<form action="">
+						<div class="input-group">
+							<input type="text" name="email" placeholder="Email">
+							<button class="submit">Подписываться</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
+
+
+
+
+
+
+
+{% block extra_js %}
+
+
+<script>
+	document.addEventListener('DOMContentLoaded', () => {
+    const replyButtons = document.querySelectorAll('.reply-btn');
+
+    replyButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const form = button.nextElementSibling;
+            form.style.display = form.style.display === 'none' ? 'flex' : 'none';
+        });
+    });
+
+
+});
+</script>
+
+
+{% endblock %}
+
+
+

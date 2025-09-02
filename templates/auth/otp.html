@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Karam.uz | OTP Verification</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f4f4f9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .otp-box {
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      width: 400px;
+      max-width: 100%;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    .otp-inputs {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .otp-inputs input {
+      width: 40px;
+      height: 40px;
+      text-align: center;
+      font-size: 18px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      padding: 5px;
+    }
+
+    .otp-inputs input:focus {
+      border-color: #3498db;
+      outline: none;
+    }
+
+    .error-message {
+      color: red;
+      font-size: 12px;
+      margin-top: 5px;
+      text-align: center;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 12px;
+      background-color: #3498db;
+      border: none;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    .submit-btn:hover {
+      background-color: #2980b9;
+    }
+
+    .resend-link {
+      text-align: center;
+      margin-top: 15px;
+    }
+
+    .resend-link a {
+      color: #3498db;
+      text-decoration: none;
+    }
+
+    .resend-link a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 480px) {
+      .otp-box {
+        padding: 20px;
+      }
+
+      .otp-inputs input {
+        width: 35px;
+        height: 35px;
+        font-size: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="otp-box">
+      <h2>OTP Verification</h2>
+      <h3 style="color: red;">{{ error }}</h3>
+      <form id="otp-form" method="post">
+        {% csrf_token %}
+        <div class="otp-inputs">
+          <input type="text" name="otp1" maxlength="1" required>
+          <input type="text" name="otp2" maxlength="1" required>
+          <input type="text" name="otp3" maxlength="1" required>
+          <input type="text" name="otp4" maxlength="1" required>
+          <input type="text" name="otp5" maxlength="1" required>
+          <input type="text" name="otp6" maxlength="1" required>
+        </div>
+        <div id="otp-error" class="error-message"></div>
+        <button type="submit" class="submit-btn">Verify OTP</button>
+      </form>
+      <p class="resend-link">Didn't receive code? <a href="">Resend OTP</a></p>
+    </div>
+  </div>
+
+  <script>
+    const inputs = document.querySelectorAll('.otp-inputs input');
+    const form = document.getElementById('otp-form');
+    const errorDisplay = document.getElementById('otp-error');
+
+    inputs.forEach((input, index) => {
+      input.addEventListener('input', (e) => {
+        if (e.target.value.length === 1 && index < inputs.length - 1) {
+          inputs[index + 1].focus();
+        }
+        errorDisplay.textContent = '';
+      });
+
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Backspace' && !e.target.value && index > 0) {
+          inputs[index - 1].focus();
+        }
+      });
+
+      input.addEventListener('paste', (e) => {
+        e.preventDefault();
+        const paste = e.clipboardData.getData('text').split('');
+        if (paste.length === inputs.length) {
+          inputs.forEach((inp, i) => {
+            inp.value = paste[i] || '';
+          });
+          inputs[inputs.length - 1].focus();
+        }
+      });
+    });
+
+
+  </script>
+</body>
+</html>
