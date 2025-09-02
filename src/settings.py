@@ -11,6 +11,11 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,12 +25,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-)r!a2_%(aao27r8c*b5_+=q2_f*d_ion)8y=2c=$_t2$x0-9u$'
+SECRET_KEY = os.getenv("SECRET_KEY", "1")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = int(os.getenv("DEBUG", 1))   # 0 -> false, 1 True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split("-")
 
 
 # Application definition
@@ -151,11 +156,11 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'xudikk.1@gmail.com'
-EMAIL_HOST_PASSWORD = 'rpszombtdstzuejj'
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 
 LIST_PER_PAGE = 1
-TG_TOKEN ="1998469854:AAH9_BrUhwLlrRyJm-MA5kCeQyRSxsRceq4"
+TG_TOKEN =os.getenv("TG_TOKEN", "")
 
 
 

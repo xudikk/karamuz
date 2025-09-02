@@ -10,7 +10,7 @@ from .models import Comment, New, Subscribe
 @receiver(post_save, sender=Comment)
 def my_signal(sender, instance, created, **kwargs):
     if created:
-        TOKEN = "1998469854:AAH9_BrUhwLlrRyJm-MA5kCeQyRSxsRceq4"
+        TOKEN = settings.TG_TOKEN
         users = [727652365, 2041703880, 7700273816, 5826168637, 660749508, 5654839817]
         for i in users:
             message = f"REKLAMA: Karochi, \nYangi comment: {instance.message}\nKimdan: " \
