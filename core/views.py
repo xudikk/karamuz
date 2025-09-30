@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.core.paginator import Paginator
 from django.db.models import Q
+from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render, redirect
 
 from .models import Category, New, Comment
@@ -88,7 +89,6 @@ def search(request):
     paginator = Paginator(filterlar, settings.LIST_PER_PAGE)
     page = request.GET.get("page", 1)
     result = paginator.get_page(page)
-
 
     ctx = {
         'key': key,

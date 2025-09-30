@@ -32,6 +32,7 @@ DEBUG = int(os.getenv("DEBUG", 1))   # 0 -> false, 1 True
 
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split("-")
 
+APP_NAME = "Karam Uz"
 
 # Application definition
 
@@ -44,8 +45,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'drf_yasg',
+    'rest_framework',
     "core",
     "widget_tweaks",
+    "rest_framework.authtoken"
 ]
 
 

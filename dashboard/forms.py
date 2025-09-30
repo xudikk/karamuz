@@ -23,3 +23,5 @@ class NewsForm(forms.ModelForm):
 
 
 
+
+

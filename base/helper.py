@@ -1,12 +1,8 @@
-
-
-
-
 # berilgan uzunlikdagi Random token generatsiya qilib beradi
 import base64
 import binascii
 import os
-
+from rest_framework.authentication import TokenAuthentication
 
 def generate_key(size=50):
     return binascii.hexlify(os.urandom(size)).decode()
@@ -23,5 +19,8 @@ def code_decoder(code, decode=False, l=1):
             code = base64.b64encode(str(code).encode()).decode()
         return code
 
+
+class BearerAuth(TokenAuthentication):
+    keyword = "Bearer"
 
 

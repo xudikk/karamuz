@@ -12,8 +12,16 @@ class Category(models.Model):
     slug = models.SlugField(max_length=56, null=True, blank=True, unique=True)
     is_menu = models.BooleanField(default=False)
 
+    def response(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "slug": self.slug,
+            "is_menu": self.get_is_menu()
+        }
+
     def get_is_menu(self):
-        return "Menuda Chiqadi✅" if self.is_menu else "Menuda Chiqmaydi❌"
+        return "Menuda Chiqadi✅" if self.is_menu else "Menuda Chiqmaydi ❌"
 
     def save(self, *args, **kwargs):
         if not self.slug:
