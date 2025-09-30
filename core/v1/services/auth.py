@@ -1,5 +1,6 @@
 import uuid
 
+from django.conf import settings
 from methodism import generate_key, code_decoder
 from rest_framework.authtoken.models import Token
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -14,8 +15,8 @@ import random
 # APIView -> model muhim rol o'ynamaganida
 import requests
 
-# bular settingsga qo'shib qo'yiladi!!!!
-bot_token = "1998469854:AAE8DgBdtWguqGOas0BKOB8qlYQgk8sF1vw"
+# # bular settingsga qo'shib qo'yiladi!!!!
+bot_token = settings.TG_TOKEN
 user_id = 727652365
 
 
